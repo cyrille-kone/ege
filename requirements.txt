@@ -1,0 +1,5 @@
+numpy
+joblib
+cython
+seaborn
+matplotlib

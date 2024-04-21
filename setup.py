@@ -7,10 +7,20 @@ import numpy as np
 from distutils.core import setup
 from Cython.Build import cythonize
 from distutils.extension import Extension
-#os.environ["CC"] = "gcc-13"
-#os.environ["CXX"] = "g++-13"
+r"""
+Define your own cpp compiler 
+If the compiler does not support 'openmp' it should be removed from the args
+"""
+os.environ["CC"] = "gcc-10" # change accordingly
+os.environ["CXX"] = "g++-10" # change accordingly
 extra_compile_args = ["-std=c++17", "-O2", "-march=native", "-fopenmp" ] #"-fopenmp"
-extra_link_args = ['-Wl,-rpath,/opt/homebrew/Cellar/gcc/13.2.0/lib/gcc/13', "-fopenmp"]#'-fopenmp'
+r'''
+If the linker does not find the path to the lib of the compiler lib 
+Please add it 
+e.g for MacOs '-Wl,-rpath,/opt/homebrew/Cellar/gcc/{version}/lib/gcc/{version}'
+'''
+# add path to the
+extra_link_args = ["-fopenmp"] #'-fopenmp'
 language = "c++"
 setup(name="aistats23",
       ext_modules=cythonize([
