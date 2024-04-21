@@ -1,5 +1,5 @@
-### Use full python implementation 
-The notebook `main.ipynb` contains the full python implementation of the algorithms and the utils are in `/utils.py`. 
+### Use the full python implementation 
+The notebook `main.ipynb` contains the full python implementation of the algorithms, and it only needs the file `/utils.py`. 
  
 ### Run the C++/ cython version 
 The cpp files can be compiled and used as a 'C++' library. Alternatively, there is a 'cython3' binding. 
