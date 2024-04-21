@@ -2,8 +2,8 @@
 The notebook `main.ipynb` contains the full python implementation of the algorithms, and it only needs the file `/utils.py`. 
  
 ### Run the C++/ cython version 
-The cpp files can be compiled and used as a 'C++' library. Alternatively, there is a 'cython3' binding. 
-To compile the cpp version with `cython`: 
+The cpp files can be compiled and used as any `C++` library. Alternatively, there is a `cython3` binding. 
+To compile the cpp version with `cython` bindings follow the steps below: 
 
 **Step 1** : Install the requirements with
 
