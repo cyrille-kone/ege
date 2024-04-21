@@ -71,65 +71,13 @@ cdef extern from "../src/cpp/policies.hpp":
         np.npy_bool loop(size_t, size_t) nogil;
 
 
-#Declare the class with cdef
-cdef extern from "../src/cpp/policies.hpp":
-    cdef cppclass psi_ape_fb(policy_fb):
-        size_t K, D, dim,
-        vector[size_t] action_space;
-        bandit * bandit_ref;
-        psi_ape_fb() except+;
-        psi_ape_fb(bandit &) except+;
-        np.npy_bool loop(size_t, size_t, double) nogil;
 
-
-#Declare the class with cdef
-cdef extern from "../src/cpp/policies.hpp":
-    cdef cppclass ape_b(policy_fb):
-        size_t K, D, dim,
-        vector[size_t] action_space;
-        bandit * bandit_ref;
-        ape_b() except+;
-        ape_b(bandit &) except+;
-        np.npy_bool loop(size_t, size_t, double) nogil;
-
-
-
-#Declare the class with cdef
-cdef extern from "../src/cpp/policies.hpp":
-    cdef cppclass psi_ucbe(policy_fb):
-        size_t K, D, dim,
-        vector[size_t] action_space;
-        bandit * bandit_ref;
-        psi_ucbe() except+;
-        psi_ucbe(bandit &) except+;
-        np.npy_bool loop(size_t, size_t, double) nogil;
-
-#Declare the class with cdef
-cdef extern from "../src/cpp/policies.hpp":
-    cdef cppclass psi_ucbe_adapt(psi_ucbe):
-        size_t K, D, dim,
-        vector[size_t] action_space;
-        bandit * bandit_ref;
-        psi_ucbe_adapt() except+;
-        psi_ucbe_adapt(bandit &) except+;
-        np.npy_bool loop(size_t, size_t, double) nogil;
-#Declare the class with cdef
-cdef extern from "../src/cpp/policies.hpp":
-    cdef cppclass ape_b_adapt(ape_b):
-        size_t K, D, dim,
-        vector[size_t] action_space;
-        bandit * bandit_ref;
-        ape_b_adapt() except+;
-        ape_b_adapt(bandit &) except+;
-        np.npy_bool loop(size_t, size_t, double) nogil;
 #Declare the class with cdef
 cdef extern from "../src/cpp/policies.hpp":
     cdef vector[double] batch_sr(bandit& bandit_ref, vector[size_t]& Ts, vector[size_t]& seeds,size_t k) ;
     cdef pair[vector[double], pair[vector[vector[vector[size_t]]], pair[vector[double], vector[double]]]] batch_srk(bandit& bandit_ref, vector[size_t]& Ts, vector[size_t]& seeds,size_t k);
     cdef vector[double] batch_ua(bandit& bandit_ref, vector[size_t]& Ts, vector[size_t]& seeds) ;
     cdef vector[double] batch_sh(bandit& bandit_ref, vector[size_t]& Ts, vector[size_t]& seeds);
-    cdef vector[double] batch_ape(bandit& bandit_ref, vector[size_t]& Ts, vector[size_t]& seeds, double a);
-    cdef vector[double] batch_ape_adapt(bandit& bandit_ref, vector[size_t]& Ts, vector[size_t]& seeds, double c);
 
 # Define Python interfaces
 cdef class Policy:
@@ -142,35 +90,14 @@ cdef class Policy:
     #cdef policy* policy_ref;
     cdef readonly vector[size_t] action_space;
 
-
-
 cdef class py_ege_sr(Policy):
     cdef ege_sr* policy_ref
-
 cdef class py_ege_srk(Policy):
     cdef ege_srk* policy_ref
 cdef class py_ua(Policy):
     cdef ua* policy_ref
 cdef class py_ege_sh(Policy):
     cdef ege_sh* policy_ref
-
-cdef class py_ape_fb(Policy):
-    cdef psi_ape_fb* policy_ref
-
-
-cdef class py_psi_ucbe(Policy):
-    cdef psi_ucbe* policy_ref
-
-cdef class py_ape_b(Policy):
-    cdef ape_b* policy_ref
-
-cdef class py_psi_ucbe_adapt(py_psi_ucbe):
-    pass
-    #cdef psi_ucbe_adapt* policy_ref
-
-cdef class py_ape_b_adapt(py_ape_b):
-    pass
-    #cdef ape_b_adapt* policy_ref
 
 #cdef inline py_batch_sr(Bandit bandit_py, vector[size_t]& Ts, vector[size_t]&seeds, size_t  k):
 #    pass

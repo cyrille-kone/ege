@@ -5,6 +5,7 @@
 
 
 std::vector<double> delta_star(const std::vector<std::vector<double>>& means, const std::vector<bool>& active_mask){
+// gap of an optimal arm
     size_t K {means.size()};
     std::vector<double> res(K);
     for (size_t i {0}; i < K; ++i) {
@@ -19,6 +20,7 @@ std::vector<double> delta_star(const std::vector<std::vector<double>>& means, co
 }
 
 std::vector<bool> pareto_optimal_arms_mask(const std::vector<std::vector<double>>&means){
+// compute the Pareto set
     bool is_dom;
     size_t K{means.size()};
     std::vector<bool> res(K);
@@ -35,26 +37,9 @@ std::vector<bool> pareto_optimal_arms_mask(const std::vector<std::vector<double>
     return res;
 }
 
-double get_z1t(const std::vector<std::vector<double>> &means, const std::vector<size_t>& St, const std::vector<std::vector<double>>& beta) {
-    if (St.empty()) return INF; // should raise exception
-    return std::transform_reduce(St.begin(), St.end(), INF,
-                                 [](double xmin, double x){return std::min(xmin,x);},
-                                 [&](size_t i){
-                                     return get_h(i, means, beta);
-                                 });
-}
-double get_z2t(const std::vector<std::vector<double>> & means, const std::vector<size_t> & St_comp,
-               const std::vector<std::vector<double>>& beta) {
-    if (St_comp.empty()) return INF;
-    return std::transform_reduce(St_comp.begin(), St_comp.end(), INF,
-                                 [](double xmin, double x) { return std::min(xmin, x); },
-                                 [&](size_t i) {
-                                     return std::max(get_h(i, means, beta), get_g(i, means, beta));
-                                 });
-}
-
 
 std::vector<bool> pareto_optimal_arms_mask(const std::vector<std::vector<double>>&mus, const std::vector<double>& betas, double eps=0.){
+// compute the Pareto set @overload
     bool is_dom;
     size_t K{mus.size()};
     std::vector<bool> res(K);
@@ -72,6 +57,7 @@ std::vector<bool> pareto_optimal_arms_mask(const std::vector<std::vector<double>
 }
 
 std::vector<bool> pareto_optimal_arms_mask(const std::vector<std::vector<double>>&means, const std::vector<bool>& active_mask){
+// compute the Pareto set @overload
     bool is_dom;
     size_t K{means.size()};
     std::vector<bool> res(K);
@@ -91,6 +77,7 @@ std::vector<bool> pareto_optimal_arms_mask(const std::vector<std::vector<double>
 
 
 double sub_opt_gap(size_t i, const std::vector<std::vector<double>>& means, const std::vector<double>& vec_delta_star, const std::vector<bool>& active_mask, bool par) {
+   // compute the sub-optmality gap of sub-optimal arms
     if (!par) return vec_delta_star[i];
     double res{INF};
     size_t K{means.size()};
@@ -138,20 +125,4 @@ std::vector<double> compute_gap(const std::vector<bool>& pareto_set_mask, const 
         deltas[i] = std::min(std::min(d1, d2), d3);
     }
     return deltas;
-}double get_z1t(const std::vector<std::vector<double>> &means, const std::vector<size_t>& St, const std::vector<size_t>& Ts, double eps_1, double delta, double sigma) {
-    if (St.empty()) return INF; // should raise exception
-    return std::transform_reduce(St.begin(), St.end(), INF,
-                                 [](double xmin, double x){return std::min(xmin,x);},
-                                 [&](size_t i){
-                                     return get_h(i, means, Ts,eps_1,delta, sigma);
-                                 });
-}
-double get_z2t(const std::vector<std::vector<double>> & means, const std::vector<size_t> & St_comp,
-               const std::vector<size_t>& Ts, double& eps_1, double delta, double sigma) {
-    if (St_comp.empty()) return INF;
-    return std::transform_reduce(St_comp.begin(), St_comp.end(), INF,
-                                 [](double xmin, double x) { return std::min(xmin, x); },
-                                 [&](size_t i) {
-                                     return std::max(get_h(i, means, Ts,eps_1, delta, sigma), get_g(i, means, Ts, std::vector<size_t>({}), 0, delta, sigma));
-                                 });
 }

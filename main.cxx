@@ -25,7 +25,6 @@ int main(int argc, char** argv) {
     double result{0.};
     size_t i;
     bernoulli bern(data);
-    ape_b ape(bern);
     ege_sr sr(bern);
     ege_sh sh(bern);
 
@@ -43,13 +42,5 @@ int main(int argc, char** argv) {
     }
     std::cout<<result/500<<std::endl;
     std::cout<<bern.H<<std::endl;
-    std::vector<size_t> Ts{5000,};
-    auto start = std::chrono::high_resolution_clock::now();
-    auto dd = batch_ape(bern,Ts,seeds, 1.);
-    auto stop = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::seconds>(stop - start);
-    print_array1d(dd);
-    std::cout << duration.count() << std::endl;
-    //auto res = ape.loop(i, 500, 0.2);
     return 0;
 }

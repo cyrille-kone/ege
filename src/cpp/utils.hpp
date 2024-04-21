@@ -16,14 +16,6 @@
 inline double Cg(const double& delta){
     return log(1/delta)/2 + std::max(log(log(1/delta)/2), 0.);
 }
-inline double betaij(const size_t& Ti, const size_t& Tj, const double& cg, const double& sigma){
-    return sigma*sqrt(
-            2*( 2*cg + 2.*log(4.+log(Ti)) + 2.*log(4.+log(Tj))
-            )*(
-                    (1./Ti) + (1./Tj)
-            )
-    );
-}
 std::vector<bool> pareto_optimal_arms_mask(const std::vector<std::vector<double>>&means);
 std::vector<bool> pareto_optimal_arms_mask(const std::vector<std::vector<double>> &means, const std::vector<bool>& active_mask);
 // using namespace std;
@@ -82,24 +74,6 @@ inline bool is_pareto_dominated(const std::vector<double>& xi, const std::vector
     }
     return is_strict;
 };
-
-[[nodiscard]] inline double get_g(size_t i, const std::vector<std::vector<double>>& means, const std::vector<size_t>& Ts, const std::vector<size_t>& opt, double eps_2, double delta, double sigma ){
-    double res{-INF};
-    size_t K{means.size()};
-    for(size_t j{0}; j<K; ++j)
-        res = std::max(res, minimum_quantity_non_dom(means[i], means[j],0.) - betaij(Ts[i], Ts[j],delta, sigma) + eps_2*((eps_2>0) && in_set(j, opt)) -INF*(i==j));
-    return res;
-}
-[[nodiscard]] inline double get_h(size_t i, const std::vector<std::vector<double>>& means, const std::vector<size_t>& Ts, double eps_1, double delta, double sigma){
-    double res{INF};
-    size_t K{means.size()};
-    for(size_t j{0}; j<K; ++j)
-        res = std::min(res, minimum_quantity_dom(means[i], means[j], eps_1) - betaij(Ts[i], Ts[j], delta, sigma) + INF*(i==j));
-    return  res;
-}
-
-//double get_z1t(const std::vector<std::vector<double>> &means, const std::vector<size_t>& St, const std::vector<size_t>& Ts, double eps_1, double delta, double sigma);
-//double get_z2t(const std::vector<std::vector<double>> & means, const std::vector<size_t> & St_comp, const std::vector<size_t>& Ts, double& eps_1, double delta, double sigma);
 std::vector<double> compute_gap(const std::vector<bool>& pareto_set_mask, const std::vector<std::vector<double>>&arms_means);
 
 
@@ -131,40 +105,6 @@ void print_array2d(const std::vector<std::vector<T>>& vec){
     std::cout<<"]"<<std::endl;
 }
 
-inline double beta_lil(const size_t& Ti, const size_t& Tj, const double& cg, const double& sigma){
-    return sigma*(sqrt(( cg + 3.*log(log(EE*(double)Ti))) /  (double)Ti) + sqrt(( cg + 3.*log(log(EE*(double)Tj))) /  (double)Tj));
-}
-[[nodiscard]] inline double get_g(const size_t& i, const std::vector<std::vector<double>>& means, const std::vector<std::vector<double>>& beta){
-    double res{-INF};
-    size_t K{means.size()};
-    for(size_t j{0}; j<K; ++j)
-        res = std::max(res, minimum_quantity_non_dom(means[i], means[j],0.) - beta[i][j]  -INF*(i==j));
-    return res;
-}
-
-[[nodiscard]] inline double get_g(const size_t& i, const std::vector<std::vector<double>>& means, const std::vector<double>& beta){
-    double res{-INF};
-    size_t K{means.size()};
-    for(size_t j{0}; j<K; ++j)
-        res = std::max(res, minimum_quantity_non_dom(means[i], means[j],0.) - beta[i] - beta[j]  -INF*(i==j));
-    return res;
-}
-
-[[nodiscard]] inline double get_h(const size_t& i, const std::vector<std::vector<double>>& means, const std::vector<std::vector<double>>& beta){
-    double res{INF};
-    size_t K{means.size()};
-    for(size_t j{0}; j<K; ++j)
-        res = std::min(res, minimum_quantity_dom(means[i], means[j], 0.) - beta[i][j] + INF*(i==j));
-    return  res;
-}
-
-[[nodiscard]] inline double get_h(const size_t& i, const std::vector<std::vector<double>>& means, const std::vector<double>& beta){
-    double res{INF};
-    size_t K{means.size()};
-    for(size_t j{0}; j<K; ++j)
-        res = std::min(res, M(means[i], means[j]) - beta[i] -beta[j] + INF*(i==j));
-    return  res;
-}
 template <typename T>
 inline std::vector<T> prod(const std::vector<T> xi, const std::vector<T> xj){
     //assert(xi.size()== xj.size());
@@ -174,5 +114,3 @@ inline std::vector<T> prod(const std::vector<T> xi, const std::vector<T> xj){
     }
     return res;
 }
-double get_z1t(const std::vector<std::vector<double>> &means, const std::vector<size_t>& St, const std::vector<std::vector<double>>& beta);
-double get_z2t(const std::vector<std::vector<double>> & means, const std::vector<size_t> & St_comp, const std::vector<std::vector<double>>& beta);

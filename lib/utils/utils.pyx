@@ -147,6 +147,3 @@ def batch_multivariate_normal(np.ndarray[double, ndim=2] batch_mean, np.ndarray[
     for k in range(batch_size):
         samples[k] = np.random.multivariate_normal(mean=batch_mean[k], cov=cov)
     return samples
-
-#@cython.boundscheck(False)
-#@cython.wraparound(False)
