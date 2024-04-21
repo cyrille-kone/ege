@@ -186,6 +186,7 @@ def Delta_i_star(i, means):
 
 
 def Delta_i(i, S_star, S_star_comp, means):
+    r""" compute the gap of an optimal arm"""
     if i in S_star: return min(delta_i_plus(i, S_star,means), delta_i_minus(i,S_star_comp,means))
     return Delta_i_star(i, means)
 
