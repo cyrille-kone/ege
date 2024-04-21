@@ -13,4 +13,4 @@ To compile the cpp version with `cython`:
 
  `python3 setup.py build_ext --inplace`
  
-**Step 3** import and use as in the notebook file `cython/main.ipynb`
+**Step 3** import and use as in the notebook file `cython/example.ipynb`
